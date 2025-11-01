@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -102,11 +101,11 @@ const prompt = ai.definePrompt({
   input: {schema: PromptInputSchema},
   output: {schema: AIOutputSchema},
   tools: [getMarketPriceTool],
-  prompt: `You are an expert agricultural consultant specializing in Indian agriculture. Your primary task is to determine a crop yield *per acre* in kilograms based on the provided data.
+  prompt: `You are an expert agricultural consultant specializing in Indian agriculture. Your primary task is to determine a crop yield per acre in kilograms based on the provided data.
 
 Here is your process:
 1.  Analyze all provided data: crop type, soil properties, and the optional photo. The context is for farming in India.
-2.  Based on all available information, determine a reasonable crop yield *for a single acre* in kilograms and a confidence interval for that estimate.
+2.  Based on all available information, determine a reasonable crop yield for a single acre in kilograms and a confidence interval for that estimate.
 3.  Use the 'getMarketPrice' tool to find the current market price for '{{{cropType}}}'. The tool will return the price, currency (always 'INR'), and unit.
 4.  In your final JSON output, you must populate all fields according to the schema.
     -   'yieldPerAcre' is your final determination for a single acre.
@@ -146,7 +145,7 @@ const estimateCropYieldFlow = ai.defineFlow(
 
     // Hard-coded checks for essential resources.
     if (rawInput.sunlight !== undefined && rawInput.sunlight < MIN_SUNLIGHT_HOURS) {
-      const reason = `the provided sunlight of ${rawInput.sunlight} hours/day is below the minimum required of ${MIN_SUNLIGHT_HOURS} hours/day for crop growth.`;
+      const reason = the provided sunlight of ${rawInput.sunlight} hours/day is below the minimum required of ${MIN_SUNLIGHT_HOURS} hours/day for crop growth.;
       return {
         estimatedYield: 0,
         confidenceInterval: { lower: 0, upper: 0 },
@@ -154,13 +153,13 @@ const estimateCropYieldFlow = ai.defineFlow(
         currency: 'INR',
         priceUnit: 'kg',
         estimatedTotalValue: 0,
-        explanation: `The estimated yield is zero because ${reason}`,
-        suggestions: [`Increase daily sunlight to at least ${MIN_SUNLIGHT_HOURS} hours to get a valid estimation.`],
+        explanation: The estimated yield is zero because ${reason},
+        suggestions: [Increase daily sunlight to at least ${MIN_SUNLIGHT_HOURS} hours to get a valid estimation.],
       };
     }
     
     if (rawInput.water !== undefined && rawInput.water < MIN_WATER_PERCENT) {
-        const reason = `the provided water content of ${rawInput.water}% is below the minimum required of ${MIN_WATER_PERCENT}% for crop growth.`;
+        const reason = the provided water content of ${rawInput.water}% is below the minimum required of ${MIN_WATER_PERCENT}% for crop growth.;
         return {
           estimatedYield: 0,
           confidenceInterval: { lower: 0, upper: 0 },
@@ -168,8 +167,8 @@ const estimateCropYieldFlow = ai.defineFlow(
           currency: 'INR',
           priceUnit: 'kg',
           estimatedTotalValue: 0,
-          explanation: `The estimated yield is zero because ${reason}`,
-          suggestions: [`Increase water content to at least ${MIN_WATER_PERCENT}% to get a valid estimation.`],
+          explanation: The estimated yield is zero because ${reason},
+          suggestions: [Increase water content to at least ${MIN_WATER_PERCENT}% to get a valid estimation.],
         };
     }
 
@@ -200,16 +199,18 @@ const estimateCropYieldFlow = ai.defineFlow(
 
     if (!aiOutput) {
       const rawText = llmResponse.text ?? "No raw text available from LLM.";
-      const firstCandidate = llmResponse.candidates?.[0];
-      const finishReason = firstCandidate?.finishReason ?? "Unknown";
-      const safetyRatings = firstCandidate?.safetyRatings ?? [];
+      // The typed response doesn't declare 'candidates', but some providers include it.
+      // Use a safe any-cast to avoid a TypeScript error while preserving debugging info.
+      const firstCandidate = (llmResponse as any).candidates?.[0];
+      const finishReason = firstCandidate?.finishReason ?? (llmResponse as any).finishReason ?? "Unknown";
+      const safetyRatings = firstCandidate?.safetyRatings ?? (llmResponse as any).safety?.ratings ?? [];
       
       console.error('LLM did not return valid structured output. Details:');
       console.error('  Raw text response from LLM:', rawText);
       console.error('  Finish reason:', finishReason);
       console.error('  Safety ratings:', JSON.stringify(safetyRatings, null, 2));
       console.error('  Input provided to LLM:', JSON.stringify(promptArgs, null, 2));
-      console.error('  Tool calls made by LLM (history):', JSON.stringify(llmResponse.history, null, 2));
+  console.error('  Tool calls made by LLM (history):', JSON.stringify((llmResponse as any).history, null, 2));
 
 
       let userMessage = 'The AI model did not return a valid estimation. Please check server logs for details.';
