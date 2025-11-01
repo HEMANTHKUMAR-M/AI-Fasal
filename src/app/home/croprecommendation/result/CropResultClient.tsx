@@ -23,7 +23,7 @@ const Chart = dynamic(
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis domain={[0, 100]} label={{ value: "Suitability %", angle: -90, position: "insideLeft" }} />
-            <Tooltip formatter={(value: number) => [${value}%, "Suitability"]} labelFormatter={(label: any) => Crop: ${label}} />
+            <Tooltip formatter={(value: number) => [`${value}%`, "Suitability"]} labelFormatter={(label: any) => `Crop: ${label}`} />
             <Bar dataKey="suitability" fill="#22c55e" radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
@@ -143,7 +143,7 @@ export default function CropResultClient() {
                         <span className="text-2xl">{crop.matchIcon}</span>
                         <div>
                           <p className="text-lg font-bold text-gray-800">#{crop.rank}: {crop.name}</p>
-                          <p className={text-sm font-medium ${crop.matchColor}}>{crop.matchQuality} Match</p>
+                          <p className={`text-sm font-medium ${crop.matchColor}`}>{crop.matchQuality} Match</p>
                         </div>
                       </div>
                       <div className="text-right">
@@ -153,7 +153,7 @@ export default function CropResultClient() {
                     </div>
 
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                      <div className={bg-green-500 h-2 rounded-full transition-all duration-500 w-[${crop.suitability}%]}></div>
+                      <div className={`bg-green-500 h-2 rounded-full transition-all duration-500 w-[${crop.suitability}%]`}></div>
                     </div>
 
                     <div className="text-xs text-gray-600 mt-2">

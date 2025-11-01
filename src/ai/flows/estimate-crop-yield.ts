@@ -145,7 +145,7 @@ const estimateCropYieldFlow = ai.defineFlow(
 
     // Hard-coded checks for essential resources.
     if (rawInput.sunlight !== undefined && rawInput.sunlight < MIN_SUNLIGHT_HOURS) {
-      const reason = the provided sunlight of ${rawInput.sunlight} hours/day is below the minimum required of ${MIN_SUNLIGHT_HOURS} hours/day for crop growth.;
+      const reason = `the provided sunlight of ${rawInput.sunlight} hours/day is below the minimum required of ${MIN_SUNLIGHT_HOURS} hours/day for crop growth.`;
       return {
         estimatedYield: 0,
         confidenceInterval: { lower: 0, upper: 0 },
@@ -153,13 +153,13 @@ const estimateCropYieldFlow = ai.defineFlow(
         currency: 'INR',
         priceUnit: 'kg',
         estimatedTotalValue: 0,
-        explanation: The estimated yield is zero because ${reason},
-        suggestions: [Increase daily sunlight to at least ${MIN_SUNLIGHT_HOURS} hours to get a valid estimation.],
+        explanation: `The estimated yield is zero because ${reason}`,
+        suggestions: [`Increase daily sunlight to at least ${MIN_SUNLIGHT_HOURS} hours to get a valid estimation.`],
       };
     }
     
     if (rawInput.water !== undefined && rawInput.water < MIN_WATER_PERCENT) {
-        const reason = the provided water content of ${rawInput.water}% is below the minimum required of ${MIN_WATER_PERCENT}% for crop growth.;
+        const reason = `the provided water content of ${rawInput.water}% is below the minimum required of ${MIN_WATER_PERCENT}% for crop growth.`;
         return {
           estimatedYield: 0,
           confidenceInterval: { lower: 0, upper: 0 },
@@ -167,8 +167,8 @@ const estimateCropYieldFlow = ai.defineFlow(
           currency: 'INR',
           priceUnit: 'kg',
           estimatedTotalValue: 0,
-          explanation: The estimated yield is zero because ${reason},
-          suggestions: [Increase water content to at least ${MIN_WATER_PERCENT}% to get a valid estimation.],
+          explanation: `The estimated yield is zero because ${reason}`,
+          suggestions: [`Increase water content to at least ${MIN_WATER_PERCENT}% to get a valid estimation.`],
         };
     }
 
