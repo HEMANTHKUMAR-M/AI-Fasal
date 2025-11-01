@@ -60,12 +60,10 @@ export default function SoilMap() {
   const router = useRouter();
 
   // ✅ Prevent "already initialized" error
-  useEffect(() => {
-    const container = L.DomUtil.get("map");
-    if (container != null) {
-      (container as any)._leaflet_id = null;
-    }
-  }, []);
+  // Note: Avoid manually mutating Leaflet internals. We'll let react-leaflet
+  // manage map lifecycle. Previously a fixed `id="map"` and manual reset
+  // caused "Map container is being reused by another instance" errors on
+  // client-side navigation. We'll not set a fixed id on the MapContainer.
 
   function LocationMarker() {
     useMapEvents({
@@ -172,7 +170,6 @@ export default function SoilMap() {
   return (
     <div className="w-full">
       <MapContainer
-        id="map"
         center={[22.5937, 78.9629]}
         zoom={5}
         minZoom={2}
