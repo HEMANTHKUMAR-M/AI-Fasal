@@ -79,7 +79,7 @@ export default function LandingPage() {
         addNotification({
           type: 'success',
           title: 'Account Created!',
-          message: 'Welcome to CropPredict! Your account has been created successfully.',
+          message: 'Welcome to AI-Fasal! Your account has been created successfully.',
         });
       } else {
         await signInWithEmailAndPassword(auth, email, password);
@@ -225,7 +225,8 @@ export default function LandingPage() {
               <Leaf className="w-10 h-10 text-primary-foreground" />
             </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-green-600 bg-clip-text text-transparent">
-              CropPredict
+              AI-Fasal
+            
             </h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

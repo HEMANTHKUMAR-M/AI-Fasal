@@ -231,7 +231,7 @@ export function CropYieldForm() {
         <CardHeader className="text-center">
           <div className="flex items-center justify-center mb-2">
             <div>
-              <CardTitle className="text-3xl font-bold text-primary">CropPredict</CardTitle>
+              <CardTitle className="text-3xl font-bold text-primary">AI-Fasal</CardTitle>
               <CardDescription className="text-lg">AI-Powered Crop Yield & Value Estimator for India</CardDescription>
             </div>
           </div>
