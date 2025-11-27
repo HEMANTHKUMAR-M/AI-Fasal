@@ -98,7 +98,18 @@ export default function CropResultClient() {
   const minScore = topUniqueCrops[0]?.score || 0;
 
   const chartData = topUniqueCrops.map((crop, index) => {
-    const suitability = Math.max(0, Math.round(((maxScore - (crop.score ?? 0)) / (maxScore - minScore)) * 100));
+    let suitability: number;
+    
+    // Handle case where all crops have the same score
+    if (maxScore === minScore) {
+      // When all scores are equal, assign suitability based on rank
+      // Top crop gets highest, others get decreasing values
+      suitability = Math.max(1, 100 - (index * 15));
+    } else {
+      // Normal calculation with minimum of 1 to avoid showing 0
+      const calculated = Math.round(((maxScore - (crop.score ?? 0)) / (maxScore - minScore)) * 100);
+      suitability = Math.max(1, calculated);
+    }
 
     let matchQuality = "Excellent";
     let matchColor = "text-green-600";
@@ -153,7 +164,10 @@ export default function CropResultClient() {
                     </div>
 
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-                      <div className={`bg-green-500 h-2 rounded-full transition-all duration-500 w-[${crop.suitability}%]`}></div>
+                      <div 
+                        className="bg-green-500 h-2 rounded-full transition-all duration-500"
+                        style={{ width: `${crop.suitability}%` }}
+                      ></div>
                     </div>
 
                     <div className="text-xs text-gray-600 mt-2">
